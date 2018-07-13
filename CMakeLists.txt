@@ -33,8 +33,13 @@ find_package(ZLIB REQUIRED)
 find_package(PNG REQUIRED)
 
 set(PDFIUM_SRC
+    constants/page_object.h
+    constants/stream_dict_common.h
+    constants/transparency.h
     fpdfsdk/cfx_systemhandler.cpp
     fpdfsdk/cfx_systemhandler.h
+    fpdfsdk/cpdf_annotcontext.cpp
+    fpdfsdk/cpdf_annotcontext.h
     fpdfsdk/cpdfsdk_actionhandler.cpp
     fpdfsdk/cpdfsdk_actionhandler.h
     fpdfsdk/cpdfsdk_annot.cpp
@@ -97,8 +102,10 @@ set(PDFIUM_SRC
     fpdfsdk/ipdfsdk_pauseadapter.cpp
     fpdfsdk/ipdfsdk_pauseadapter.h
     public/cpp/fpdf_deleters.h
+    public/cpp/fpdf_scopers.h
     public/fpdf_annot.h
     public/fpdf_attachment.h
+    public/fpdf_catalog.h
     public/fpdf_dataavail.h
     public/fpdf_doc.h
     public/fpdf_edit.h
@@ -277,6 +284,8 @@ set(FPDFAPI_SRC
     core/fpdfapi/edit/cpdf_flateencoder.h
     core/fpdfapi/edit/cpdf_pagecontentgenerator.cpp
     core/fpdfapi/edit/cpdf_pagecontentgenerator.h
+    core/fpdfapi/edit/cpdf_pagecontentmanager.cpp
+    core/fpdfapi/edit/cpdf_pagecontentmanager.h
     core/fpdfapi/font/cfx_cttgsubtable.cpp
     core/fpdfapi/font/cfx_cttgsubtable.h
     core/fpdfapi/font/cfx_stockfontarray.cpp
@@ -390,6 +399,7 @@ set(FPDFAPI_SRC
     core/fpdfapi/page/cpdf_textstate.h
     core/fpdfapi/page/cpdf_tilingpattern.cpp
     core/fpdfapi/page/cpdf_tilingpattern.h
+    core/fpdfapi/page/ipdf_page.h
     core/fpdfapi/parser/cfdf_document.cpp
     core/fpdfapi/parser/cfdf_document.h
     core/fpdfapi/parser/cpdf_array.cpp
@@ -398,6 +408,8 @@ set(FPDFAPI_SRC
     core/fpdfapi/parser/cpdf_boolean.h
     core/fpdfapi/parser/cpdf_cross_ref_avail.cpp
     core/fpdfapi/parser/cpdf_cross_ref_avail.h
+    core/fpdfapi/parser/cpdf_cross_ref_table.cpp
+    core/fpdfapi/parser/cpdf_cross_ref_table.h
     core/fpdfapi/parser/cpdf_crypto_handler.cpp
     core/fpdfapi/parser/cpdf_crypto_handler.h
     core/fpdfapi/parser/cpdf_data_avail.cpp
@@ -422,6 +434,8 @@ set(FPDFAPI_SRC
     core/fpdfapi/parser/cpdf_object.h
     core/fpdfapi/parser/cpdf_object_avail.cpp
     core/fpdfapi/parser/cpdf_object_avail.h
+    core/fpdfapi/parser/cpdf_object_stream.cpp
+    core/fpdfapi/parser/cpdf_object_stream.h
     core/fpdfapi/parser/cpdf_object_walker.cpp
     core/fpdfapi/parser/cpdf_object_walker.h
     core/fpdfapi/parser/cpdf_page_object_avail.cpp
@@ -480,6 +494,8 @@ set(FPDFAPI_SRC
     core/fpdfapi/render/cpdf_textrenderer.h
     core/fpdfapi/render/cpdf_transferfunc.cpp
     core/fpdfapi/render/cpdf_transferfunc.h
+    core/fpdfapi/render/cpdf_transparency.cpp
+    core/fpdfapi/render/cpdf_transparency.h
     core/fpdfapi/render/cpdf_type3cache.cpp
     core/fpdfapi/render/cpdf_type3cache.h
     core/fpdfapi/render/cpdf_type3glyphs.cpp
@@ -538,8 +554,6 @@ set(FXCODEC_SRC
     core/fxcodec/jbig2/JBig2_HuffmanDecoder.h
     core/fxcodec/jbig2/JBig2_HuffmanTable.cpp
     core/fxcodec/jbig2/JBig2_HuffmanTable.h
-    core/fxcodec/jbig2/JBig2_HuffmanTable_Standard.cpp
-    core/fxcodec/jbig2/JBig2_HuffmanTable_Standard.h
     core/fxcodec/jbig2/JBig2_Image.cpp
     core/fxcodec/jbig2/JBig2_Image.h
     core/fxcodec/jbig2/JBig2_Page.h
@@ -587,6 +601,7 @@ set(FXCRT_SRC
     core/fxcrt/fx_bidi.cpp
     core/fxcrt/fx_bidi.h
     core/fxcrt/fx_codepage.h
+    core/fxcrt/fx_codepage.cpp
     core/fxcrt/fx_coordinates.cpp
     core/fxcrt/fx_coordinates.h
     core/fxcrt/fx_extension.cpp
@@ -620,6 +635,8 @@ set(FXCRT_SRC
     core/fxcrt/widestring.h
     core/fxcrt/xml/cfx_xmlchardata.cpp
     core/fxcrt/xml/cfx_xmlchardata.h
+    core/fxcrt/xml/cfx_xmldocument.cpp
+    core/fxcrt/xml/cfx_xmldocument.h
     core/fxcrt/xml/cfx_xmlelement.cpp
     core/fxcrt/xml/cfx_xmlelement.h
     core/fxcrt/xml/cfx_xmlinstruction.cpp
@@ -942,7 +959,6 @@ set(THIRD_PARTY_FX_FREETYPE_SRC
     freetype/src/include/freetype/internal/fthash.h
     freetype/src/include/freetype/internal/ftmemory.h
     freetype/src/include/freetype/internal/ftobjs.h
-    freetype/src/include/freetype/internal/ftpic.h
     freetype/src/include/freetype/internal/ftrfork.h
     freetype/src/include/freetype/internal/ftserv.h
     freetype/src/include/freetype/internal/ftstream.h
