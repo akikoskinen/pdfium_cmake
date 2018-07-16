@@ -19,6 +19,8 @@ if(${V8_USE_EXTERNAL_SNAPSHOT})
     message(WARNING "External snapshots are currently not supported by this build, they cause v8 to crash")
 endif()
 
+execute_process(COMMAND gclient sync --nohooks --no-history WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
     set(LINUX TRUE)
 endif()
