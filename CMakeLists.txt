@@ -19,7 +19,10 @@ if(${V8_USE_EXTERNAL_SNAPSHOT})
     message(WARNING "External snapshots are currently not supported by this build, they cause v8 to crash")
 endif()
 
-execute_process(COMMAND gclient sync --nohooks --no-history WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+execute_process(COMMAND gclient sync --nohooks --no-history WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR} RESULT_VARIABLE GCLIENT_RESULT)
+if(${GCLIENT_RESULT})
+    message(FATAL_ERROR "Failed to execute `gclient sync` for PDFium")
+endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
     set(LINUX TRUE)
